@@ -10,7 +10,7 @@ const port = process.env.APP_PORT ?? 5000;
 
 const userHandlers = require("./userHandlers");
 const movieHandlers = require("./movieHandlers");
-const { hashPassword, verifyPassword, verifyToken } = require("./auth");
+const { hashPassword, verifyPassword, verifyToken, verifyId } = require("./auth");
 
 const welcome = (req, res) => {
   res.send("Welcome to my favourite movie list");
@@ -52,8 +52,8 @@ app.post("/api/movies", movieHandlers.postMovie);
 app.put("/api/movies/:id", movieHandlers.updateMovie);
 app.delete("/api/movies/:id", movieHandlers.deleteMovie);
 
-app.put("/api/users/:id", hashPassword, userHandlers.updateUser);
-app.delete("/api/users/:id", userHandlers.deleteUser);
+app.put("/api/users/:id", verifyId, hashPassword, userHandlers.updateUser);
+app.delete("/api/users/:id", verifyId, userHandlers.deleteUser);
 
 //////
 
